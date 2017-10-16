@@ -27,6 +27,7 @@ canvas = tkinter.Canvas(master, width=SMALL_WIDTH, height=SMALL_HEIGHT)
 canvas.pack()
 
 
+
 def shrink(values):
     return [v/SUBSAMPLE for v in values]
 
@@ -83,7 +84,31 @@ def on_click(event):
 
     redraw()
 
+def key(event):
+    print(event.char)
+    p2_pathfinder.change_alg(event.char)
+
+
+def keydown(event):
+    print(event.char)
+    p2_pathfinder.change_alg(event.char)
+
+def motion(event):
+    x, y = event.x, event.y
+    box = p2_pathfinder.point_to_box(mesh["boxes"], (y,x))
+
+    try:
+        s = sum(box)
+        master.title("{}, {} - {} {} {} {} - {}".format(y,x, box[0],box[1],box[2],box[3], s))
+    except:
+        pass
+
+canvas.bind('<Motion>', motion)
+#canvas.bind('<Key>', key)
 canvas.bind('<Button-1>', on_click)
+#canvas.bind("<KeyPress>", keydown)
+#canvas.pack()
+#canvas.focus_set()
 
 redraw()
 master.mainloop()
